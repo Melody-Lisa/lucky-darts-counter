@@ -18,10 +18,15 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
-@app.route("/tests")
-def tests():
-    tests = mongo.db.test.find()
-    return render_template("calculator.html", tests=tests)
+@app.route("/home")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/calculator")
+def checkouts():
+    checkouts = mongo.db.checkout.find()
+    return render_template("calculator.html", checkouts=checkouts)
 
 
 if __name__ == "__main__":
