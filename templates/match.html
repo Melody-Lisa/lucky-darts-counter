@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Number Pad Input</h4>
+
+<div class="row center-align pad">
+    <div class="col s4 offset-s4">
+        <input type="text" id="numberInput" class="input-field center-align" value="{{ number }}">
+    </div>
+</div>
+
+<div class="row center-align pad">
+    <div class="col s6 offset-s3">
+        <a href="{{ url_for('update_number', number=1) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">1</a>
+
+        <a href="{{ url_for('update_number', number=2) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">2</a>
+
+        <a href="{{ url_for('update_number', number=3) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">3</a>
+    </div>
+</div>
+
+<div class="row center-align pad">
+    <div class="col s6 offset-s3">
+        <a href="{{ url_for('update_number', number=4) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">4</a>
+
+        <a href="{{ url_for('update_number', number=5) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">5</a>
+
+        <a href="{{ url_for('update_number', number=6) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">6</a>
+    </div>
+</div>
+
+<div class="row center-align pad">
+    <div class="col s6 offset-s3">
+        <a href="{{ url_for('update_number', number=7) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">7</a>
+
+        <a href="{{ url_for('update_number', number=8) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">8</a>
+
+        <a href="{{ url_for('update_number', number=9) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">9</a>
+    </div>
+</div>
+
+<div class="row center-align pad">
+    <div class="col s6 offset-s3">
+        <a class="waves-effect waves-light btn-large num-pad-btn red text-darken-3" href="#"><i
+                class="fa-solid fa-rotate-left"></i></a>
+
+        <a href="{{ url_for('update_number', number=0) }}" class="waves-effect waves-light btn-large num-pad-btn grey darken-4">0</a>
+
+        <a class="waves-effect waves-light btn-large num-pad-btn green text-darken-3" href="#"><i
+                class="fa-solid fa-arrow-right"></i></a>
+    </div>
+</div>
+
+<!--
+    {% for checkout in checkouts %}
+    {{ checkout.score }}<br>
+    {{ checkout.finish }}<br>
+    {% endfor %}
+-->
+
+{% endblock %}

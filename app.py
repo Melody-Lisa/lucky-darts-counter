@@ -28,10 +28,15 @@ def games():
     return render_template("games.html")
 
 
+@app.route('/update_number/<int:number>')
+def update_number(number):
+    return render_template('match.html', number=number)
+    
+
 @app.route("/calculator")
 def checkouts():
     checkouts = mongo.db.checkout.find()
-    return render_template("calculator.html", checkouts=checkouts)
+    return render_template("match.html", checkouts=checkouts)
 
 
 if __name__ == "__main__":
