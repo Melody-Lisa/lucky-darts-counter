@@ -23,6 +23,11 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/games")
+def games():
+    return render_template("games.html")
+
+
 @app.route("/calculator")
 def checkouts():
     checkouts = mongo.db.checkout.find()
