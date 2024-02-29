@@ -58,9 +58,14 @@ def delete_last_number():
 def update_score():
     global initial_score
     concatenated_number = int(''.join(str(num) for num in numbers_entered))
-    initial_score -= concatenated_number
-    numbers_entered.clear()  # Clear the list of entered numbers after calculation
-    return redirect('/match')
+    new_score = initial_score - concatenated_number
+    if new_score < 0:
+        flash('Invalid input: Score cannot go below 0', 'error')
+        return redirect('/match')
+    else:
+        initial_score = new_score
+        numbers_entered.clear()  # Clear the list of entered numbers after the calculation
+        return redirect('/match')
 
 
 # @app.route("/calculator")
