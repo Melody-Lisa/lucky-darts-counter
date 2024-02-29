@@ -17,9 +17,6 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-numbers_entered = []
-
-
 @app.route("/")
 @app.route("/home")
 def home():
@@ -32,28 +29,44 @@ def games():
 
 
 numbers_entered = []
+concatenated_numbers = []
+initial_score = 501
+
 
 @app.route('/match')
 def match():
     concatenated_numbers = ''.join(str(num) for num in numbers_entered)
-    return render_template('match.html', concatenated_numbers=concatenated_numbers)
+    return render_template('match.html',
+     concatenated_numbers=concatenated_numbers,
+      initial_score=initial_score)
 
-@app.route('/update_number/<int:number>')
-def update_number(number):
+
+@app.route('/enter_number/<int:number>')
+def enter_number(number):
     numbers_entered.append(number)
     return redirect('/match')
+
 
 @app.route('/delete_last_number')
 def delete_last_number():
     if numbers_entered:
         numbers_entered.pop()
     return redirect('/match')
-    
 
-@app.route("/calculator")
-def checkouts():
-    checkouts = mongo.db.checkout.find()
-    return render_template("match.html", checkouts=checkouts)
+
+@app.route('/match_score')
+def update_score():
+    global initial_score
+    concatenated_number = int(''.join(str(num) for num in numbers_entered))
+    initial_score -= concatenated_number
+    numbers_entered.clear()  # Clear the list of entered numbers after calculation
+    return redirect('/match')
+
+
+# @app.route("/calculator")
+# def checkouts():
+#     checkouts = mongo.db.checkout.find()
+#     return render_template('/match', checkouts=checkouts)
 
 
 if __name__ == "__main__":
