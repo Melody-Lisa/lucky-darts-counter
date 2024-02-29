@@ -17,6 +17,9 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
+numbers_entered = []
+
+
 @app.route("/")
 @app.route("/home")
 def home():
@@ -29,8 +32,12 @@ def games():
 
 
 @app.route('/update_number/<int:number>')
-def update_number(number):
-    return render_template('match.html', number=number)
+def update_number(number=None):
+    if number is not None:
+        numbers_entered.append(number)
+
+    concatenated_numbers = ''.join(str(num) for num in numbers_entered)
+    return render_template('match.html', concatenated_numbers=concatenated_numbers)
     
 
 @app.route("/calculator")
