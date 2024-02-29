@@ -31,13 +31,23 @@ def games():
     return render_template("games.html")
 
 
-@app.route('/update_number/<int:number>')
-def update_number(number=None):
-    if number is not None:
-        numbers_entered.append(number)
+numbers_entered = []
 
+@app.route('/match')
+def match():
     concatenated_numbers = ''.join(str(num) for num in numbers_entered)
     return render_template('match.html', concatenated_numbers=concatenated_numbers)
+
+@app.route('/update_number/<int:number>')
+def update_number(number):
+    numbers_entered.append(number)
+    return redirect('/match')
+
+@app.route('/delete_last_number')
+def delete_last_number():
+    if numbers_entered:
+        numbers_entered.pop()
+    return redirect('/match')
     
 
 @app.route("/calculator")
