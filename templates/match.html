@@ -2,76 +2,78 @@
 {% block content %}
 
 {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
+{% if messages %}
+{% for category, message in messages %}
 
-                            <p>{{ message }}</p>
+<p>{{ message }}</p>
 
-        {% endfor %}
-    {% endif %}
+{% endfor %}
+{% endif %}
 {% endwith %}
 
 <div class="row center-align">
     <div id="initialScore" class="input-field center-align">{{ initial_score }}</div>
 </div>
 
-<div class="row center-align pad">
+<div class="row">
     <div class="col s4 offset-s4">
-        <input type="text" id="numberInput" class="input-field center-align" readonly value="{{ concatenated_numbers }}">
+        <input type="text" id="numberInput" class="input-field center-align" readonly
+            value="{{ concatenated_numbers }}">
     </div>
 </div>
 
-<div class="row center-align pad">
-    <div class="col s6 offset-s3">
-        <a href="{{ url_for('enter_number', number=1) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">1</a>
+<div class="center-align pad"> 
+<div class="col s6 offset-s3">
+    <a href="{{ url_for('enter_number', number=1) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">1</a>
 
-        <a href="{{ url_for('enter_number', number=2) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">2</a>
+    <a href="{{ url_for('enter_number', number=2) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">2</a>
 
-        <a href="{{ url_for('enter_number', number=3) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">3</a>
-    </div>
+    <a href="{{ url_for('enter_number', number=3) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">3</a>
 </div>
 
-<div class="row center-align pad">
-    <div class="col s6 offset-s3">
-        <a href="{{ url_for('enter_number', number=4) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">4</a>
 
-        <a href="{{ url_for('enter_number', number=5) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">5</a>
 
-        <a href="{{ url_for('enter_number', number=6) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">6</a>
-    </div>
+<div class="col s6 offset-s3">
+    <a href="{{ url_for('enter_number', number=4) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">4</a>
+
+    <a href="{{ url_for('enter_number', number=5) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">5</a>
+
+    <a href="{{ url_for('enter_number', number=6) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">6</a>
 </div>
 
-<div class="row center-align pad">
-    <div class="col s6 offset-s3">
-        <a href="{{ url_for('enter_number', number=7) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">7</a>
 
-        <a href="{{ url_for('enter_number', number=8) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">8</a>
 
-        <a href="{{ url_for('enter_number', number=9) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">9</a>
-    </div>
+<div class="col s6 offset-s3">
+    <a href="{{ url_for('enter_number', number=7) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">7</a>
+
+    <a href="{{ url_for('enter_number', number=8) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">8</a>
+
+    <a href="{{ url_for('enter_number', number=9) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">9</a>
 </div>
 
-<div class="row center-align pad">
-    <div class="col s6 offset-s3">
-        <a href="{{ url_for('delete_last_number') }}"
-            class="waves-effect waves-light btn-large num-pad-btn red text-darken-3"><i
-                class="fa-solid fa-rotate-left"></i></a>
 
-        <a href="{{ url_for('enter_number', number=0) }}"
-            class="waves-effect waves-light btn-large num-pad-btn grey darken-4">0</a>
 
-        <a  href="{{ url_for('update_score') }}" class="waves-effect waves-light btn-large num-pad-btn green text-darken-3"><i
-                class="fa-solid fa-arrow-right"></i></a>
-    </div>
+<div class="col s6 offset-s3">
+    <a href="{{ url_for('delete_last_number') }}"
+        class="waves-effect waves-light btn-large num-pad-btn red text-darken-3"><i
+            class="fa-solid fa-rotate-left"></i></a>
+
+    <a href="{{ url_for('enter_number', number=0) }}"
+        class="waves-effect waves-light btn-large num-pad-btn grey darken-4">0</a>
+
+    <a href="{{ url_for('update_score') }}"
+        class="waves-effect waves-light btn-large num-pad-btn green text-darken-3"><i
+            class="fa-solid fa-arrow-right"></i></a>
+</div>
 </div>
 
 <!--
