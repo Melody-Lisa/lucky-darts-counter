@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    {% for checkout in checkouts %}
+    {{ checkout.score }}<br>
+    {{ checkout.finish }}<br>
+    {% endfor %}
+
+
+{% endblock %}
