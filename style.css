@@ -1,9 +1,15 @@
 body {
     background-color: darkgray;
+    color: white;
 }
 
 h1 {
     font-size: 2rem;
+    color: black;
+}
+
+input {
+    color: white;
 }
 
 .restart{
@@ -24,8 +30,8 @@ h1 {
     margin-bottom: 0;
 }
 
-.pad {
-    background-color: rgb(56, 56, 56);
+.wrapper {
+    background-color: rgb(44, 43, 43);
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 5px;
