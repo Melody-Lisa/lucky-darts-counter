@@ -2,6 +2,14 @@ body {
     background-color: darkgray;
 }
 
+h1 {
+    font-size: 2rem;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
 .pad {
     margin-bottom: 0px;
 }
