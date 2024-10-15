@@ -25,10 +25,14 @@ h1 {
 }
 
 .pad {
-    margin-bottom: 0px;
+    background-color: rgb(56, 56, 56);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
 }
 
 .num-pad-btn {
-
     margin: 1px;
+    padding: 25px;
+    color: white;
 }

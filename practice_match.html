@@ -35,70 +35,71 @@
             <div id="initialScore" class="input-field center-align my-0">501</div> <!-- Set initial value to 501 -->
         </div>
 
-        <div class="row">
+        <div class="row mb-0">
             <div class="col s4 offset-s4">
                 <!-- Number input display (readonly) -->
                 <input type="text" id="numberInput" class="input-field center-align" readonly value="">
             </div>
         </div>
 
-        <div class="center-align pad">
-            <div class="col s6 offset-s3">
-                <button onclick="enterNumber(1)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">1</button>
+        <div class="wrapper">
+        <div class="container center-align pad">
+                <div class="col s6 offset-s3">
+                    <button onclick="enterNumber(1)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">1</button>
 
-                <button onclick="enterNumber(2)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">2</button>
+                    <button onclick="enterNumber(2)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">2</button>
 
-                <button onclick="enterNumber(3)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">3</button>
-            </div>
-
-
-
-            <div class="col s6 offset-s3">
-                <button onclick="enterNumber(4)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">4</button>
-
-                <button onclick="enterNumber(5)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">5</button>
-
-                <button onclick="enterNumber(6)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">6</button>
-            </div>
+                    <button onclick="enterNumber(3)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">3</button>
+                </div>
 
 
 
-            <div class="col s6 offset-s3">
-                <button onclick="enterNumber(7)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">7</button>
+                <div class="col s6 offset-s3">
+                    <button onclick="enterNumber(4)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">4</button>
 
-                <button onclick="enterNumber(8)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">8</button>
+                    <button onclick="enterNumber(5)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">5</button>
 
-                <button onclick="enterNumber(9)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">9</button>
-            </div>
+                    <button onclick="enterNumber(6)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">6</button>
+                </div>
 
 
 
-            <div class="col s6 offset-s3">
-                <button onclick="deleteLastNumber()"
-                    class="waves-effect waves-light btn-large num-pad-btn red text-darken-3"><i
-                        class="fa-solid fa-rotate-left"></i></button>
+                <div class="col s6 offset-s3">
+                    <button onclick="enterNumber(7)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">7</button>
 
-                <button onclick="enterNumber(0)"
-                    class="waves-effect waves-light btn-large num-pad-btn grey darken-4">0</button>
+                    <button onclick="enterNumber(8)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">8</button>
 
-                <button onclick="updateScore()"
-                    class="waves-effect waves-light btn-large num-pad-btn green text-darken-3"><i
-                        class="fa-solid fa-arrow-right"></i></button>
+                    <button onclick="enterNumber(9)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">9</button>
+                </div>
+
+
+
+                <div class="col s6 offset-s3">
+                    <button onclick="deleteLastNumber()"
+                        class="waves-effect waves-light num-pad-btn red text-darken-3"><i
+                            class="fa-solid fa-rotate-left"></i></button>
+
+                    <button onclick="enterNumber(0)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">0</button>
+
+                    <button onclick="updateScore()" class="waves-effect waves-light num-pad-btn green text-darken-3"><i
+                            class="fa-solid fa-arrow-right"></i></button>
+                </div>
             </div>
         </div>
 
         <span onclick="restartGame()" class="restart">
             Restart Game
-        </span>        
+        </span>
 
     </main>
 
