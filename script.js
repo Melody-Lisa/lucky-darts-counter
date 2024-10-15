@@ -43,6 +43,12 @@ function updateScore() {
         return;
     }
 
+    if (concatenatedNumber > 180) {
+        // If the entered number exceeds 180, show an error and don't update the score
+        alert('Invalid input: A single score entry cannot exceed 180!');
+        return;
+    }
+
     const newScore = initialScore - concatenatedNumber;
 
     if (newScore < 0) {
