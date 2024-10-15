@@ -6,6 +6,20 @@ h1 {
     font-size: 2rem;
 }
 
+.restart{
+    cursor: pointer;
+    color: rgba(255, 0, 0, 1);
+    text-decoration: underline;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+    float: right;
+    margin-top: 5px;
+}
+
+.restart:hover{
+    color: red;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.6);
+}
+
 .mb-0 {
     margin-bottom: 0;
 }

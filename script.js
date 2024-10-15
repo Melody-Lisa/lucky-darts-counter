@@ -62,5 +62,14 @@ function updateScore() {
     }
 }
 
+function restartGame() {
+    initialScore = 501;
+    numbersEntered = [];
+    scoreHistory = [initialScore];
+    displayConcatenatedNumbers();
+    updateScoreDisplay();
+    alert('Game has been restarted!');
+}
+
 // Initial display of the score
 updateScoreDisplay();
