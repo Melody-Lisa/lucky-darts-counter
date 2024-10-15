@@ -1,0 +1,12 @@
+body {
+    background-color: darkgray;
+}
+
+.pad {
+    margin-bottom: 0px;
+}
+
+.num-pad-btn {
+
+    margin: 1px;
+}
