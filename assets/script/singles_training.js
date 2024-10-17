@@ -7,6 +7,7 @@ dartValues.push(25, 50); // Add bullseye values (25, 50)
 let currentIndex = 0;   // Track the current dart value index
 let currentClicks = 0;  // Track the number of clicks for the current dart value
 let initialScore = 0;   // Set initial score to 0
+let highestScore = 0;   // Track the highest score
 
 // Function to display dart buttons dynamically for a given value
 function displayDartButtons(value) {
@@ -26,7 +27,7 @@ function displayDartButtons(value) {
         buttonContainer.appendChild(missButton);
     } else {
         // Special buttons for bullseye values (25, 50)
-        const bull25Button = createButton('25', 5); // 25 is treated as 5 point
+        const bull25Button = createButton('25', 5); // 25 is treated as 5 points
         const bull50Button = createButton('50', 10); // 50 is treated as 10 points
         const missButton = createButton('Miss', 0); // Miss button adds 0 points
 
@@ -50,8 +51,24 @@ function createButton(label, points) {
     return button;
 }
 
+// Function to restart the game and reset all states
+function restartGame() {
+    currentIndex = 0;
+    currentClicks = 0;
+    initialScore = 0;
+    randomValues = []; // Reset random values for a new game round
+    updateScoreDisplay();
+
+    // Default to incremental mode on restart
+    incremental();
+}
+
 // Incremental function to show dart values sequentially
 function incremental() {
+    // Apply active class to Incremental button, remove from Random
+    document.getElementById('incrementalButton').classList.add('active-mode');
+    document.getElementById('randomButton').classList.remove('active-mode');
+
     if (currentIndex < dartValues.length) {
         // If we have more dart values, display the next set of buttons
         displayDartButtons(dartValues[currentIndex]);
@@ -59,13 +76,8 @@ function incremental() {
         // All dart values have been displayed, game ends here
         alert(`Thank you for playing!\nFinal Score: ${initialScore}\nHighest Score: ${highestScore}`);
 
-        // Check if current score is higher than previous highest score
-        if (initialScore > highestScore) {
-            highestScore = initialScore; // Update highest score if new score is higher
-        }
-
         // Reset the game state for a new round
-        resetGame();
+        restartGame();
     }
 }
 
@@ -103,6 +115,10 @@ function trackClicks() {
 let randomValues = [];
 
 function randomOrder() {
+    // Apply active class to Random button, remove from Incremental
+    document.getElementById('randomButton').classList.add('active-mode');
+    document.getElementById('incrementalButton').classList.remove('active-mode');
+
     if (randomValues.length === 0) {
         randomValues = shuffleArray([...dartValues]); // Shuffle values for random mode
     }
@@ -111,16 +127,15 @@ function randomOrder() {
         const value = randomValues.pop();
         displayDartButtons(value); // Display buttons for that random value
     } else {
-        // All dart values have been displayed, game ends here
+        // Game ends and score check
         alert(`Thank you for playing!\nFinal Score: ${initialScore}\nHighest Score: ${highestScore}`);
 
-        // Check if current score is higher than previous highest score
         if (initialScore > highestScore) {
-            highestScore = initialScore; // Update highest score if new score is higher
+            highestScore = initialScore; // Update highest score
         }
 
-        // Reset the game state for a new round
-        resetGame();
+        // Reset game state for a new round
+        restartGame();  // Properly restart the game here
     }
 }
 

@@ -42,3 +42,9 @@ input {
     padding: 25px;
     color: white;
 }
+
+#incrementalButton.active-mode, #randomButton.active-mode {
+    background-color: whitesmoke !important; /* Highlight color */
+    color: black !important; /* Text color */
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4) inset;
+}

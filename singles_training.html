@@ -31,8 +31,8 @@
         <h1 class="center">Singles Training</h1>
 
         <div class="row right-align">
-            <button onclick="incremental()" class="grey darken-3 white-text">Incremental</button>
-            <button onclick="randomOrder()" class="grey darken-3 white-text">Random</button>
+            <button id="incrementalButton" onclick="incremental()" class="grey darken-3 white-text">Incremental</button>
+            <button id="randomButton" onclick="randomOrder()" class="grey darken-3 white-text">Random</button>
         </div>
 
         <div class="wrapper">
@@ -45,20 +45,17 @@
                 <div class="col s6 offset-s3">
                     <div id="dartButtons" class="row"></div>
 
-                <div class="col s6 offset-s3">
-                    <button onclick="deleteLastScore()"
-                        class="waves-effect waves-light num-pad-btn red text-darken-3"><i
-                            class="fa-solid fa-rotate-left"></i></button>
-
-                    <button onclick="updateScore()" class="waves-effect waves-light num-pad-btn green text-darken-3"><i
-                            class="fa-solid fa-arrow-right"></i></button>
+                    <div class="col s6 offset-s3">
+                        <button onclick="deleteLastScore()"
+                            class="waves-effect waves-light num-pad-btn red text-darken-3"><i
+                                class="fa-solid fa-rotate-left"></i></button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <span onclick="restartGame()" class="restart">
-            Restart Game
-        </span>
+            <span onclick="restartGame()" class="restart">
+                Restart Game
+            </span>
 
     </main>
 
