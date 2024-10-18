@@ -2,6 +2,15 @@ let initialScore = 501;
 let numbersEntered = [];
 let scoreHistory = [initialScore]; // Track score history, starting with the initial score
 
+
+function startGame() {
+    initialScore = 501;
+    numbersEntered = [];
+    scoreHistory = [initialScore];
+    displayConcatenatedNumbers();
+    updateScoreDisplay();
+}
+
 // Function to display concatenated numbers in the input field
 function displayConcatenatedNumbers() {
     const concatenatedNumbers = numbersEntered.join('');
@@ -34,6 +43,7 @@ function deleteLastNumber() {
     }
 }
 
+
 // Function to update the score
 function updateScore() {
     const concatenatedNumber = parseInt(numbersEntered.join(''));
@@ -60,16 +70,12 @@ function updateScore() {
         displayConcatenatedNumbers();
         updateScoreDisplay();
     }
-}
 
-function restartGame() {
-    initialScore = 501;
-    numbersEntered = [];
-    scoreHistory = [initialScore];
-    displayConcatenatedNumbers();
-    updateScoreDisplay();
-    alert('Game has been restarted!');
+    if (newScore == 0) {
+        updateScoreDisplay();
+        alert('You checked out!');
+    }
 }
 
 // Initial display of the score
-updateScoreDisplay();
+startGame();
