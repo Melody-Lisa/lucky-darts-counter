@@ -1,13 +1,15 @@
 let initialScore = 501;
 let numbersEntered = [];
 let scoreHistory = [initialScore]; // Track score history, starting with the initial score
+let totalPoints = 0; // Track total points entered
+let totalEntries = 0; // Track total number of entries
+let average = 0; // Track average score
 
 // Initialise modals
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
 });
-
 
 function startGame() {
     initialScore = 501;
@@ -26,6 +28,12 @@ function displayConcatenatedNumbers() {
 // Function to update the score display
 function updateScoreDisplay() {
     document.getElementById('initialScore').innerText = initialScore;
+}
+
+// Function to update the average display
+function updateAverageDisplay() {
+    document.getElementById('averageScore').innerText = average.toFixed(2);
+    // Display the average with 2 decimal places
 }
 
 // Function to handle number entry
@@ -49,7 +57,7 @@ function deleteLastNumber() {
     }
 }
 
-// Function to clear the input area //
+// Function to clear the input area
 function clearInput() {
     numbersEntered.length = 0;
     displayConcatenatedNumbers();
@@ -60,14 +68,12 @@ function updateScore() {
     const concatenatedNumber = parseInt(numbersEntered.join(''));
 
     if (isNaN(concatenatedNumber)) {
-        // Error handler if anything other a number is entered
         var modalInstance = M.Modal.getInstance(document.getElementById('nanModal'));
         modalInstance.open();
         return;
     }
 
     if (concatenatedNumber > 180) {
-        // Error handler if the entered number exceeds 180
         var modalInstance = M.Modal.getInstance(document.getElementById('tooHighModal'));
         modalInstance.open();
         return;
@@ -76,15 +82,18 @@ function updateScore() {
     const newScore = initialScore - concatenatedNumber;
 
     if (newScore < 0) {
-        // Error handler if the entered number drops the score below 0
         var modalInstance = M.Modal.getInstance(document.getElementById('minusModal'));
         modalInstance.open();
     } else {
         scoreHistory.push(newScore);  // Save the current score before updating
         initialScore = newScore;      // Update the score
-        numbersEntered = [];          // Clear numbers after calculation
+        totalPoints += concatenatedNumber; // Add to total points
+        totalEntries++; // Increment the total entries count
+        average = totalPoints / totalEntries; // Calculate the average score
+        numbersEntered = []; // Clear numbers after calculation
         displayConcatenatedNumbers();
         updateScoreDisplay();
+        updateAverageDisplay(); // Update the average display after score update
     }
 
     if (newScore == 0) {
