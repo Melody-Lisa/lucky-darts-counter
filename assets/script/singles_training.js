@@ -8,6 +8,7 @@ let currentIndex = 0;   // Track the current dart value index
 let currentClicks = 0;  // Track the number of clicks for the current dart value
 let initialScore = 0;   // Set initial score to 0
 let highestScore = 0;   // Track the highest score
+let scoreHistory = [initialScore]; // Store history of scores for undo functionality
 
 // Function to display dart buttons dynamically for a given value
 function displayDartButtons(value) {
@@ -56,7 +57,8 @@ function restartGame() {
     currentIndex = 0;
     currentClicks = 0;
     initialScore = 0;
-    randomValues = []; // Reset random values for a new game round
+    scoreHistory = [initialScore];  // Reset score history
+    randomValues = [];              // Reset random values for a new game round
     updateScoreDisplay();
 
     // Default to incremental mode on restart
@@ -83,8 +85,9 @@ function incremental() {
 
 // Function to handle the entered score and update the displayed score
 function enterScore(points) {
-    initialScore += points; // Update the score by adding points
-    updateScoreDisplay();   // Call function to update the score display
+    initialScore += points;            // Update the score by adding points
+    scoreHistory.push(initialScore);    // Save current score to history
+    updateScoreDisplay();               // Call function to update the score display
 }
 
 // Function to update the score display on the page
@@ -146,6 +149,27 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+
+function deleteLastScore() {
+    if (scoreHistory.length > 1) {   // Ensure there's a previous score to revert to
+        scoreHistory.pop();          // Remove the latest score from history
+        initialScore = scoreHistory[scoreHistory.length - 1]; // Revert to the last score
+        updateScoreDisplay();
+
+        // Check if we need to revert to the previous set of buttons
+        if (currentClicks === 0 && currentIndex > 0) {
+            currentIndex--;        // Move back to the previous dart value
+            currentClicks = 2;     // Set clicks to 2 to reflect the previous 3-click cycle
+            displayDartButtons(dartValues[currentIndex]); // Display the previous set of buttons
+        } else if (currentClicks > 0) {
+            currentClicks--;       // Just revert one click if we're still in the same set
+        }
+    } else {
+        initialScore = 0;            // Reset to 0 if it's the last score
+        updateScoreDisplay();
+    }
 }
 
 // Initial call to display the first set of buttons
