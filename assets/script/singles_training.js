@@ -1,148 +1,153 @@
+// Initialize dart values for 1-20, including bullseye values (25, 50)
 let dartValues = [];
 for (let i = 1; i <= 20; i++) {
     dartValues.push(i);
 }
-dartValues.push(25, 50); // Add bullseye values (25, 50)
+dartValues.push(25, 50); // Bullseye values
 
-let currentIndex = 0;   // Track the current dart value index
-let currentClicks = 0;  // Track the number of clicks for the current dart value
-let initialScore = 0;   // Set initial score to 0
-let highestScore = 0;   // Track the highest score
-let scoreHistory = [initialScore]; // Store history of scores for undo functionality
+// Initialize game state variables
+let currentIndex = 0;         // Current dart value index
+let currentClicks = 0;        // Number of clicks for the current dart value
+let initialScore = 0;         // Current score
+let highestScore = 0;         // Highest score achieved
+let scoreHistory = [initialScore]; // Store score history for undo functionality
+let randomValues = [];        // Holds shuffled dart values for random order mode
 
-// Function to display dart buttons dynamically for a given value
+// Game control functions
+
+// Display dart buttons for a given value (S, D, T, Miss for 1-20; bullseye values 25, 50)
 function displayDartButtons(value) {
     const buttonContainer = document.getElementById('dartButtons');
     buttonContainer.innerHTML = ''; // Clear previous buttons
 
-    // Display S, D, T, and Miss buttons for values 1-20
     if (value <= 20) {
-        const singleButton = createButton(`S${value}`, 1); // Single button adds 1 point
-        const doubleButton = createButton(`D${value}`, 2); // Double button adds 2 points
-        const trebleButton = createButton(`T${value}`, 3); // Treble button adds 3 points
-        const missButton = createButton('Miss', 0);        // Miss button adds 0 points
-
-        buttonContainer.appendChild(singleButton);
-        buttonContainer.appendChild(doubleButton);
-        buttonContainer.appendChild(trebleButton);
-        buttonContainer.appendChild(missButton);
+        buttonContainer.appendChild(createButton(`S${value}`, 1));   // Single button
+        buttonContainer.appendChild(createButton(`D${value}`, 2));   // Double button
+        buttonContainer.appendChild(createButton(`T${value}`, 3));   // Treble button
+        buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     } else {
-        // Special buttons for bullseye values (25, 50)
-        const bull25Button = createButton('25', 5); // 25 is treated as 5 points
-        const bull50Button = createButton('50', 10); // 50 is treated as 10 points
-        const missButton = createButton('Miss', 0); // Miss button adds 0 points
-
-        buttonContainer.appendChild(bull25Button);
-        buttonContainer.appendChild(bull50Button);
-        buttonContainer.appendChild(missButton);
+        buttonContainer.appendChild(createButton('25', 5));          // 25 is 5 points
+        buttonContainer.appendChild(createButton('50', 10));         // 50 is 10 points
+        buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     }
 }
 
-// Helper function to create a button element
+// Helper to create a button element with specified label and point value
 function createButton(label, points) {
     const button = document.createElement('button');
     button.classList.add('waves-effect', 'waves-light', 'num-pad-btn', 'grey', 'darken-4');
     button.innerText = label;
-
     button.onclick = () => {
         enterScore(points);  // Update the score
-        trackClicks();       // Track the number of clicks and update buttons after 3 clicks
+        trackClicks();       // Track clicks and update buttons after 3 clicks
     };
-
     return button;
 }
 
-// Function to restart the game and reset all states
-function restartGame() {
-    currentIndex = 0;
-    currentClicks = 0;
-    initialScore = 0;
-    scoreHistory = [initialScore];  // Reset score history
-    randomValues = [];              // Reset random values for a new game round
-    updateScoreDisplay();
-
-    // Default to incremental mode on restart
-    incremental();
+// Function to handle entered score and update display
+function enterScore(points) {
+    initialScore += points;             // Add points to score
+    scoreHistory.push(initialScore);     // Save current score to history
+    updateScoreDisplay();                // Update score display on page
 }
 
-// Incremental function to show dart values sequentially
-function incremental() {
-    // Apply active class to Incremental button, remove from Random
-    document.getElementById('incrementalButton').classList.add('active-mode');
-    document.getElementById('randomButton').classList.remove('active-mode');
+// Undo functionality: removes the last score entered and adjusts button display if needed
+function deleteLastScore() {
+    if (scoreHistory.length > 1) {      // Ensure there's a score to revert to
+        scoreHistory.pop();             // Remove latest score
+        initialScore = scoreHistory[scoreHistory.length - 1]; // Revert to last score
+        updateScoreDisplay();
 
-    if (currentIndex < dartValues.length) {
-        // If we have more dart values, display the next set of buttons
-        displayDartButtons(dartValues[currentIndex]);
+        if (currentClicks === 0 && currentIndex > 0) {  // If last action changed dart value set
+            currentIndex--;         // Move back to previous dart value
+            currentClicks = 2;      // Set clicks to 2 to reflect 3-click cycle
+            displayDartButtons(dartValues[currentIndex]); // Display previous set of buttons
+        } else if (currentClicks > 0) {
+            currentClicks--;        // Revert one click if staying on same set
+        }
     } else {
-        // All dart values have been displayed, game ends here
-        alert(`Thank you for playing!\nFinal Score: ${initialScore}\nHighest Score: ${highestScore}`);
-
-        // Reset the game state for a new round
-        restartGame();
+        initialScore = 0;            // Reset to 0 if it's the last score
+        updateScoreDisplay();
     }
 }
 
-// Function to handle the entered score and update the displayed score
-function enterScore(points) {
-    initialScore += points;            // Update the score by adding points
-    scoreHistory.push(initialScore);    // Save current score to history
-    updateScoreDisplay();               // Call function to update the score display
-}
-
-// Function to update the score display on the page
+// Update score display on page
 function updateScoreDisplay() {
     const scoreDisplay = document.getElementById('initialScore');
-    scoreDisplay.innerText = initialScore; // Display the updated score
+    scoreDisplay.innerText = initialScore; // Display updated score
 }
 
-// Function to track clicks and update buttons after 3 clicks
+// Track button clicks and advance to the next dart value every 3 clicks
 function trackClicks() {
     currentClicks++; // Increment click count
 
     if (currentClicks === 3) {
-        currentClicks = 0; // Reset clicks after 3
-        currentIndex++;     // Move to the next dart value
+        currentClicks = 0;           // Reset clicks after 3
+        currentIndex++;               // Move to the next dart value
 
-        // If we have more dart values, display the next set of buttons
         if (currentIndex < dartValues.length) {
-            displayDartButtons(dartValues[currentIndex]);
+            displayDartButtons(dartValues[currentIndex]); // Show next set of buttons
         } else {
             alert(`Thank you for playing!\nFinal Score: ${initialScore}`);
-            currentIndex = 0; // Reset index if all values are displayed
+            currentIndex = 0;         // Reset index if all values are displayed
         }
     }
 }
 
-// Random function to show dart values in random order
-let randomValues = [];
+// Game modes: Incremental and Random
 
+// Incremental mode displays dart values in sequential order
+function incremental() {
+    document.getElementById('incrementalButton').classList.add('active-mode');
+    document.getElementById('randomButton').classList.remove('active-mode');
+
+    if (currentIndex < dartValues.length) {
+        displayDartButtons(dartValues[currentIndex]);
+    } else {
+        endGame();
+    }
+}
+
+// Random mode displays dart values in a shuffled order
 function randomOrder() {
-    // Apply active class to Random button, remove from Incremental
     document.getElementById('randomButton').classList.add('active-mode');
     document.getElementById('incrementalButton').classList.remove('active-mode');
 
     if (randomValues.length === 0) {
-        randomValues = shuffleArray([...dartValues]); // Shuffle values for random mode
+        randomValues = shuffleArray([...dartValues]); // Shuffle values
     }
 
     if (randomValues.length > 0) {
         const value = randomValues.pop();
-        displayDartButtons(value); // Display buttons for that random value
+        displayDartButtons(value);
     } else {
-        // Game ends and score check
-        alert(`Thank you for playing!\nFinal Score: ${initialScore}\nHighest Score: ${highestScore}`);
-
-        if (initialScore > highestScore) {
-            highestScore = initialScore; // Update highest score
-        }
-
-        // Reset game state for a new round
-        restartGame();  // Properly restart the game here
+        endGame();
     }
 }
 
-// Function to shuffle an array (Fisher-Yates algorithm)
+// End game: alerts final and highest scores, restarts game
+function endGame() {
+    alert(`Thank you for playing!\nFinal Score: ${initialScore}\nHighest Score: ${highestScore}`);
+    if (initialScore > highestScore) {
+        highestScore = initialScore;  // Update highest score if beaten
+    }
+    restartGame();                     // Restart game for a new round
+}
+
+// Reset all game states to initial values for a new game
+function restartGame() {
+    currentIndex = 0;
+    currentClicks = 0;
+    initialScore = 0;
+    scoreHistory = [initialScore];
+    randomValues = [];                 // Clear random values for new game
+    updateScoreDisplay();
+    incremental();                     // Default mode is incremental
+}
+
+// Utility functions
+
+// Fisher-Yates shuffle algorithm to shuffle an array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -151,26 +156,5 @@ function shuffleArray(array) {
     return array;
 }
 
-
-function deleteLastScore() {
-    if (scoreHistory.length > 1) {   // Ensure there's a previous score to revert to
-        scoreHistory.pop();          // Remove the latest score from history
-        initialScore = scoreHistory[scoreHistory.length - 1]; // Revert to the last score
-        updateScoreDisplay();
-
-        // Check if we need to revert to the previous set of buttons
-        if (currentClicks === 0 && currentIndex > 0) {
-            currentIndex--;        // Move back to the previous dart value
-            currentClicks = 2;     // Set clicks to 2 to reflect the previous 3-click cycle
-            displayDartButtons(dartValues[currentIndex]); // Display the previous set of buttons
-        } else if (currentClicks > 0) {
-            currentClicks--;       // Just revert one click if we're still in the same set
-        }
-    } else {
-        initialScore = 0;            // Reset to 0 if it's the last score
-        updateScoreDisplay();
-    }
-}
-
-// Initial call to display the first set of buttons
+// Initial setup: display the first set of buttons in incremental mode
 incremental();
