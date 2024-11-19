@@ -62,6 +62,6 @@ input {
 }
 
 .active-player {
-    background-color: yellow;  /* Or any color to highlight */
     font-weight: bold;
+    text-decoration: underline 2px solid black;
 }
