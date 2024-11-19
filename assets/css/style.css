@@ -65,3 +65,14 @@ input {
     font-weight: bold;
     text-decoration: underline 2px solid black;
 }
+
+#playerOneInitialScore,
+#playerTwoInitialScore {
+    margin-left: 20px;
+    padding: 10px 20px;
+
+    border-radius: 15px;
+    background: rgb(145, 144, 144);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+    text-decoration: none;
+}
