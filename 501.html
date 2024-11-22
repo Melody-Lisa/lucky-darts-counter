@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+        integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA=="
+        crossorigin="anonymous" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        type="text/css">
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+
+    <title>Lucky Darts</title>
+</head>
+
+<body>
+    <header>
+        <!-- top navbar -->
+        <nav class="grey darken-4">
+            <div class="nav-wrapper">
+                <a href="index.html" class="brand-logo red-text center"><i class="fa-solid fa-bullseye fa-xl"></i><span
+                        class="hide-on-med-and-down"> Lucky Darts Counter</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <h1 class="center">501 Match</h1>
+
+        <div class="row two-player black-text center">
+            <div id="playerOne" class="left">Player1:
+                <span id="playerOneInitialScore" class="input-field center-align my-0">501</span>
+            </div>
+            <div id="playerTwo" class="center">Player2:
+                <span id="playerTwoInitialScore" class="input-field center-align my-0">501</span>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="row center-align mb-0">
+
+            <div class="row mb-0">
+                <div class="col s4 offset-s4">
+                    <!-- Number input display (readonly) -->
+                    <input type="text" id="numberInput" class="input-field center-align" value="">
+                </div>
+            </div>
+
+            <div class="container center-align pad">
+                <div class="col s6 offset-s3">
+                    <button onclick="enterNumber(1)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">1</button>
+
+                    <button onclick="enterNumber(2)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">2</button>
+
+                    <button onclick="enterNumber(3)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">3</button>
+                </div>
+
+
+
+                <div class="col s6 offset-s3">
+                    <button onclick="enterNumber(4)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">4</button>
+
+                    <button onclick="enterNumber(5)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">5</button>
+
+                    <button onclick="enterNumber(6)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">6</button>
+                </div>
+
+
+
+                <div class="col s6 offset-s3">
+                    <button onclick="enterNumber(7)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">7</button>
+
+                    <button onclick="enterNumber(8)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">8</button>
+
+                    <button onclick="enterNumber(9)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">9</button>
+                </div>
+
+
+
+                <div class="col s6 offset-s3">
+                    <button onclick="deleteLastNumber()"
+                        class="waves-effect waves-light num-pad-btn red text-darken-3"><i
+                            class="fa-solid fa-rotate-left"></i></button>
+
+                    <button onclick="enterNumber(0)"
+                        class="waves-effect waves-light num-pad-btn grey darken-4">0</button>
+
+                    <button onclick="updateScore()" class="waves-effect waves-light num-pad-btn green text-darken-3"><i
+                            class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <span onclick="startGame()" class="restart">
+            Restart Game
+        </span>
+
+    </main>
+
+    <!-- Modals -->
+    <!-- Checkout -->
+    <div id="checkoutModal" class="modal grey darken-4">
+        <div class="modal-content">
+            <h4>Checkout</h4>
+            <p>Congratulations, you checked out!</p>
+        </div>
+        <div class="modal-footer black">
+            <a href="#!" onclick="startGame()" class="modal-close waves-effect waves-green btn-flat red-text">Close</a>
+        </div>
+    </div>
+
+    <!-- Score below 0 -->
+    <div id="minusModal" class="modal grey darken-4">
+        <div class="modal-content">
+            <h4>Invalid input!</h4>
+            <p>Score cannot go below 0</p>
+        </div>
+        <div class="modal-footer black">
+            <a href="#!" onclick="clearInput()" class="modal-close waves-effect waves-green btn-flat red-text">Close</a>
+        </div>
+    </div>
+
+    <!-- Single score above 180 -->
+    <div id="tooHighModal" class="modal grey darken-4">
+        <div class="modal-content">
+            <h4>Invalid input!</h4>
+            <p>Score cannot exceed 180!</p>
+        </div>
+        <div class="modal-footer black">
+            <a href="#!" onclick="clearInput()" class="modal-close waves-effect waves-green btn-flat red-text">Close</a>
+        </div>
+    </div>
+
+    <!-- Not a Number -->
+    <div id="nanModal" class="modal grey darken-4">
+        <div class="modal-content">
+            <h4>Invalid input!</h4>
+            <p>Please enter a valid number!</p>
+        </div>
+        <div class="modal-footer black">
+            <a href="#!" onclick="clearInput()" class="modal-close waves-effect waves-green btn-flat red-text">Close</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5039af5aad.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="assets/script/501.js"></script>
+</body>
+
+</html>
