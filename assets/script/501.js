@@ -2,7 +2,8 @@
 let currentPlayer = 1;
 let initialScore = { 1: 501, 2: 501 };  // Starting score for both players
 let numbersEntered = [];
-let scoreHistory = { 1: [501], 2: [501] }; // Track score history for each player
+let scoreHistory = [{ ...initialScore }]; // Track score history per player
+let totalPoints = { 1: 0, 2: 0 }; // Track total points per player
 
 // Function to detect if the user is on a mobile device
 function isMobileDevice() {
@@ -10,24 +11,24 @@ function isMobileDevice() {
 }
 
 // Automatically focus the input field when the page loads (desktop only)
-window.onload = function() {
+window.onload = function () {
     if (!isMobileDevice()) {
         document.getElementById('numberInput').focus();
     }
 };
 
 // Keep the input field focused when clicking outside (desktop only)
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const numberInput = document.getElementById('numberInput');
     if (!isMobileDevice() && event.target !== numberInput) {
-        numberInput.focus(); // Refocus the input field
+        numberInput.focus();
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialise modals
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize modals
     var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
+    M.Modal.init(elems);
 
     // Add event listener for keyboard input only on desktop
     if (!isMobileDevice()) {
@@ -37,8 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function startGame() {
     initialScore = { 1: 501, 2: 501 };
+    currentPlayer = 1; // Start with Player 1
     numbersEntered = [];
-    scoreHistory = [initialScore];
+    scoreHistory = [{ ...initialScore }];
+    totalPoints = { 1: 0, 2: 0 }; // Reset total points
     displayConcatenatedNumbers();
     updateScoreDisplay();
 }
@@ -54,8 +57,18 @@ function enterNumber(number) {
     numbersEntered.push(number);
     displayConcatenatedNumbers();
     if (!isMobileDevice()) {
-        document.getElementById('numberInput').focus(); // Refocus the input field on desktop
+        document.getElementById('numberInput').focus();
     }
+}
+
+// Function to update the score display
+function updateScoreDisplay() {
+    document.getElementById('playerOneInitialScore').innerText = initialScore[1];
+    document.getElementById('playerTwoInitialScore').innerText = initialScore[2];
+
+    // Highlight the active player's score area
+    document.getElementById('playerOneInitialScore').classList.toggle('active-player', currentPlayer === 1);
+    document.getElementById('playerTwoInitialScore').classList.toggle('active-player', currentPlayer === 2);
 }
 
 // Function to delete the last entered number
@@ -64,21 +77,21 @@ function deleteLastNumber() {
         numbersEntered.pop();
         displayConcatenatedNumbers();
         if (!isMobileDevice()) {
-            document.getElementById('numberInput').focus(); // Refocus the input field on desktop
+            document.getElementById('numberInput').focus();
         }
     }
 
-    // If there are no numbers left after deletion, restore the previous score
+    // If there are no numbers left, restore the previous score for both players
     if (numbersEntered.length === 0 && scoreHistory.length > 1) {
-        scoreHistory.pop();          // Remove the latest score
-        initialScore = scoreHistory[scoreHistory.length - 1]; // Revert to the previous score
-        updateScoreDisplay();        // Update the score display
+        scoreHistory.pop();
+        initialScore = { ...scoreHistory[scoreHistory.length - 1] };
+        updateScoreDisplay();
     }
 }
 
 // Function to clear the input area
 function clearInput() {
-    numbersEntered.length = 0;
+    numbersEntered = [];
     displayConcatenatedNumbers();
 }
 
@@ -86,23 +99,21 @@ function clearInput() {
 function handleKeyboardInput(event) {
     const value = event.target.value;
 
-    // Validate that the input contains only numbers (0-9)
+    // Validate input (only numbers 0-9)
     if (/^\d*$/.test(value)) {
-        numbersEntered = value.split(''); // Update the numbersEntered array
+        numbersEntered = value.split('');
     } else {
-        // If invalid input, reset the input field to the valid content
         event.target.value = numbersEntered.join('');
     }
 
-    // Refocus the input field after any input
     document.getElementById('numberInput').focus();
 }
 
 // Listen for the 'Enter' key on the input field (desktop only)
 if (!isMobileDevice()) {
-    document.getElementById('numberInput').addEventListener('keydown', function(event) {
+    document.getElementById('numberInput').addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
-            updateScore(); // Call the updateScore function when Enter is pressed
+            updateScore();
         }
     });
 }
@@ -112,40 +123,49 @@ function updateScore() {
     const concatenatedNumber = parseInt(numbersEntered.join(''));
 
     if (isNaN(concatenatedNumber)) {
-        var modalInstance = M.Modal.getInstance(document.getElementById('nanModal'));
-        modalInstance.open();
+        M.Modal.getInstance(document.getElementById('nanModal')).open();
         return;
     }
 
     if (concatenatedNumber > 180) {
-        var modalInstance = M.Modal.getInstance(document.getElementById('tooHighModal'));
-        modalInstance.open();
+        M.Modal.getInstance(document.getElementById('tooHighModal')).open();
         return;
     }
 
-    const newScore = initialScore - concatenatedNumber;
+    const newScore = initialScore[currentPlayer] - concatenatedNumber;
 
     if (newScore < 0) {
-        var modalInstance = M.Modal.getInstance(document.getElementById('minusModal'));
-        modalInstance.open();
+        M.Modal.getInstance(document.getElementById('minusModal')).open();
     } else {
-        scoreHistory.push(newScore);  // Save the current score before updating
-        initialScore = newScore;      // Update the score
-        totalPoints += concatenatedNumber; // Add to total points
-        totalEntries++; // Increment the total entries count
-        average = totalPoints / totalEntries; // Calculate the average score
-        numbersEntered = []; // Clear numbers after calculation
-        displayConcatenatedNumbers();
-        updateScoreDisplay();
-        updateAverageDisplay(); // Update the average display after score update
-    }
+        // Store the previous score before updating
+        scoreHistory.push({ ...initialScore });
 
-    if (newScore == 0) {
+        // Update the current player's score
+        initialScore[currentPlayer] = newScore;
+        totalPoints[currentPlayer] += concatenatedNumber;
+
+        // Clear input field
+        numbersEntered = [];
+        displayConcatenatedNumbers();
+
+        // Check for win condition
+        if (newScore === 0) {
+            updateScoreDisplay(); // Ensure UI updates before showing win modal
+
+            // Update the modal content with the correct winning player
+            document.querySelector("#checkoutModal .modal-content p").innerText = `Congratulations, Player ${currentPlayer} wins!`;
+
+            M.Modal.getInstance(document.getElementById('checkoutModal')).open();
+            return;
+        }
+
+        // Switch player BEFORE updating the UI
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+
+        // Now update the display, ensuring the highlight is correct
         updateScoreDisplay();
-        var modalInstance = M.Modal.getInstance(document.getElementById('checkoutModal'));
-        modalInstance.open();
     }
 }
 
-// Initial display of the score
+// Start the game on page load
 startGame();
