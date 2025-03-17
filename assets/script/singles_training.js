@@ -1,3 +1,8 @@
+// Initialize Materialize modal
+document.addEventListener('DOMContentLoaded', function () {
+    M.Modal.init(document.querySelectorAll('.modal'));
+});
+
 // Initialize dart values for 1-20, including bullseye values (25, 50)
 let dartValues = Array.from({ length: 20 }, (_, i) => i + 1).concat(25, 50);
 
@@ -22,10 +27,10 @@ function displayDartButtons(value) {
         buttonContainer.appendChild(createButton(`T${value}`, 3));   // Treble button
         buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     } else if (value === 25) {
-        buttonContainer.appendChild(createButton('Outer Bull', 5));          // 25 is 5 points
+        buttonContainer.appendChild(createButton('Outer Bull', 5));  // 25 is 5 points
         buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     } else {
-        buttonContainer.appendChild(createButton('Bull', 10));         // 50 is 10 points
+        buttonContainer.appendChild(createButton('Bull', 10));       // 50 is 10 points
         buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     }
 }
@@ -122,13 +127,22 @@ function randomOrder() {
     }
 }
 
-// End game: alerts final and highest scores, restarts game
+// End game: show checkout modal and restart game
 function endGame() {
-    alert(`Thank you for playing!\nFinal Score: ${initialScore}\nHighest Score: ${highestScore}`);
+    // Update highest score before showing the modal
     if (initialScore > highestScore) {
-        highestScore = initialScore;  // Update highest score if beaten
+        highestScore = initialScore;
     }
-    restartGame();                     // Restart game for a new round
+    
+    // Update modal content
+    document.getElementById("finalScoreText").textContent = `Final Score: ${initialScore}`;
+    document.getElementById("highestScoreText").textContent = `Highest Score: ${highestScore}`;
+    
+    // Show modal using Materialize
+    const checkoutModal = M.Modal.getInstance(document.getElementById("checkoutModal"));
+    checkoutModal.open();
+
+    restartGame();
 }
 
 // Reset all game states to initial values for a new game
