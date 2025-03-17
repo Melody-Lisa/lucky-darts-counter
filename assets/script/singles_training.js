@@ -1,9 +1,5 @@
 // Initialize dart values for 1-20, including bullseye values (25, 50)
-let dartValues = [];
-for (let i = 1; i <= 20; i++) {
-    dartValues.push(i);
-}
-dartValues.push(25, 50); // Bullseye values
+let dartValues = Array.from({ length: 20 }, (_, i) => i + 1).concat(25, 50);
 
 // Initialize game state variables
 let currentIndex = 0;         // Current dart value index
@@ -25,9 +21,11 @@ function displayDartButtons(value) {
         buttonContainer.appendChild(createButton(`D${value}`, 2));   // Double button
         buttonContainer.appendChild(createButton(`T${value}`, 3));   // Treble button
         buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
+    } else if (value === 25) {
+        buttonContainer.appendChild(createButton('Outer Bull', 5));          // 25 is 5 points
+        buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     } else {
-        buttonContainer.appendChild(createButton('25', 5));          // 25 is 5 points
-        buttonContainer.appendChild(createButton('50', 10));         // 50 is 10 points
+        buttonContainer.appendChild(createButton('Bull', 10));         // 50 is 10 points
         buttonContainer.appendChild(createButton('Miss', 0));        // Miss button
     }
 }
