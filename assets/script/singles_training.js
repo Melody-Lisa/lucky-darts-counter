@@ -1,8 +1,3 @@
-// Initialize Materialize modal
-document.addEventListener('DOMContentLoaded', function () {
-    M.Modal.init(document.querySelectorAll('.modal'));
-});
-
 // Initialize dart values for 1-20, including bullseye values (25, 50)
 let dartValues = Array.from({ length: 20 }, (_, i) => i + 1).concat(25, 50);
 
@@ -13,6 +8,7 @@ let initialScore = 0;         // Current score
 let highestScore = 0;         // Highest score achieved
 let scoreHistory = [initialScore]; // Store score history for undo functionality
 let randomValues = [];        // Holds shuffled dart values for random order mode
+let isRandomMode = false;     // Track if random mode is active
 
 // Game control functions
 
@@ -64,7 +60,7 @@ function deleteLastScore() {
         if (currentClicks === 0 && currentIndex > 0) {  // If last action changed dart value set
             currentIndex--;         // Move back to previous dart value
             currentClicks = 2;      // Set clicks to 2 to reflect 3-click cycle
-            displayDartButtons(dartValues[currentIndex]); // Display previous set of buttons
+            displayDartButtons(isRandomMode ? randomValues[currentIndex] : dartValues[currentIndex]); // Display previous set of buttons
         } else if (currentClicks > 0) {
             currentClicks--;        // Revert one click if staying on same set
         }
@@ -86,12 +82,20 @@ function trackClicks() {
 
     if (currentClicks === 3) {
         currentClicks = 0;           // Reset clicks after 3
-        currentIndex++;               // Move to the next dart value
+        currentIndex++;              // Move to the next dart value
 
-        if (currentIndex < dartValues.length) {
-            displayDartButtons(dartValues[currentIndex]); // Show next set of buttons
+        if (isRandomMode) {
+            if (currentIndex < randomValues.length) {
+                displayDartButtons(randomValues[currentIndex]); // Show next set of buttons in random order
+            } else {
+                endGame();
+            }
         } else {
-            endGame();
+            if (currentIndex < dartValues.length) {
+                displayDartButtons(dartValues[currentIndex]); // Show next set of buttons incrementally
+            } else {
+                endGame();
+            }
         }
     }
 }
@@ -100,31 +104,21 @@ function trackClicks() {
 
 // Incremental mode displays dart values in sequential order
 function incremental() {
+    isRandomMode = false;
+    currentIndex = 0;  // Reset index
     document.getElementById('incrementalButton').classList.add('active-mode');
     document.getElementById('randomButton').classList.remove('active-mode');
-
-    if (currentIndex < dartValues.length) {
-        displayDartButtons(dartValues[currentIndex]);
-    } else {
-        endGame();
-    }
+    displayDartButtons(dartValues[currentIndex]);
 }
 
 // Random mode displays dart values in a shuffled order
 function randomOrder() {
+    isRandomMode = true;
+    currentIndex = 0;  // Reset index
+    randomValues = shuffleArray([...dartValues]); // Shuffle values
     document.getElementById('randomButton').classList.add('active-mode');
     document.getElementById('incrementalButton').classList.remove('active-mode');
-
-    if (randomValues.length === 0) {
-        randomValues = shuffleArray([...dartValues]); // Shuffle values
-    }
-
-    if (randomValues.length > 0) {
-        const value = randomValues.pop();
-        displayDartButtons(value);
-    } else {
-        endGame();
-    }
+    displayDartButtons(randomValues[currentIndex]);
 }
 
 // End game: show checkout modal and restart game
@@ -138,10 +132,11 @@ function endGame() {
     document.getElementById("finalScoreText").textContent = `Final Score: ${initialScore}`;
     document.getElementById("highestScoreText").textContent = `Highest Score: ${highestScore}`;
     
-    // Show modal using Materialize
-    const checkoutModal = M.Modal.getInstance(document.getElementById("checkoutModal"));
-    checkoutModal.open();
+    // Show modal
+    const modal = M.Modal.getInstance(document.getElementById("checkoutModal"));
+    modal.open();
 
+    // Automatically restart game when modal is triggered
     restartGame();
 }
 
@@ -168,4 +163,10 @@ function shuffleArray(array) {
 }
 
 // Initial setup: display the first set of buttons in incremental mode
-incremental();
+document.addEventListener('DOMContentLoaded', function () {
+    const modals = document.querySelectorAll('.modal');
+    M.Modal.init(modals, {
+        onCloseEnd: restartGame  // Ensure game restarts when modal closes
+    });
+    incremental();
+});
