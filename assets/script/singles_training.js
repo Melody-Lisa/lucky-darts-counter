@@ -88,8 +88,7 @@ function trackClicks() {
         if (currentIndex < dartValues.length) {
             displayDartButtons(dartValues[currentIndex]); // Show next set of buttons
         } else {
-            alert(`Thank you for playing!\nFinal Score: ${initialScore}`);
-            currentIndex = 0;         // Reset index if all values are displayed
+            endGame();
         }
     }
 }
